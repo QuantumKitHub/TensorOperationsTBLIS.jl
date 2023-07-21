@@ -13,17 +13,15 @@ export tblis_set_num_threads, tblis_get_num_threads
 # TensorOperations
 #------------------
 
-const TblisBackend = TensorOperations.Backend{:tblis}
+const tblisBackend = TensorOperations.Backend{:tblis}
 
 function TensorOperations.tensoradd!(C::StridedArray{T}, pC::Index2Tuple,
                                      A::StridedArray{T}, conjA::Symbol,
                                      α::Number, β::Number,
-                                     ::TblisBackend) where {T<:BlasFloat}
+                                     ::tblisBackend) where {T<:BlasFloat}
     TensorOperations.argcheck_tensoradd(C, pC, A)
-    # check dimensions
-    size(C) == getindex.(Ref(size(A)), linearize(pC)) ||
-        throw(DimensionMismatch("incompatible sizes"))
-
+    TensorOperations.dimcheck_tensoradd(C, pC, A)
+    
     szC = collect(size(C))
     strC = collect(strides(C))
     C_tblis = tblis_tensor(C, szC, strC, β)
@@ -42,11 +40,11 @@ function TensorOperations.tensorcontract!(C::StridedArray{T}, pC::Index2Tuple,
                                           A::StridedArray{T}, pA::Index2Tuple,
                                           conjA::Symbol, B::StridedArray{T},
                                           pB::Index2Tuple, conjB::Symbol, α::Number,
-                                          β::Number, ::TblisBackend) where {T<:BlasFloat}
+                                          β::Number, ::tblisBackend) where {T<:BlasFloat}
     TensorOperations.argcheck_tensorcontract(C, pC, A, pA, B, pB)
     TensorOperations.dimcheck_tensorcontract(C, pC, A, pA, B, pB)
 
-    rmul!(C, β)
+    rmul!(C, β) # TODO: is it possible to use tblis scaling here?
     szC = ndims(C) == 0 ? Int[] : collect(size(C))
     strC = ndims(C) == 0 ? Int[] : collect(strides(C))
     C_tblis = tblis_tensor(C, szC, strC)
@@ -67,10 +65,11 @@ function TensorOperations.tensorcontract!(C::StridedArray{T}, pC::Index2Tuple,
 end
 
 # partial traces do not exist in tblis afaik -> use default implementation
+# TODO: implement full trace
 function TensorOperations.tensortrace!(C::StridedArray{T}, pC::Index2Tuple,
                                        A::StridedArray{T}, pA::Index2Tuple, conjA::Symbol,
                                        α::Number, β::Number,
-                                       ::TblisBackend) where {T<:BlasFloat}
+                                       ::tblisBackend) where {T<:BlasFloat}
     return tensortrace!(C, pC, A, pA, conjA, α, β)
 end
 

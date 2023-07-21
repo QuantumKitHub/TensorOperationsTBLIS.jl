@@ -1,5 +1,6 @@
 # TensorOperationsTBLIS.jl
-[tblis](https://github.com/devinamatthews/tblis) wrapper for [TensorOperations.jl]()
+
+[tblis](https://github.com/devinamatthews/tblis) wrapper for [TensorOperations.jl](https://github.com/Jutho/TensorOperations.jl)
 
 [![CI][ci-img]][ci-url] [![CI (Julia nightly)][ci-julia-nightly-img]][ci-julia-nightly-url] [![][codecov-img]][codecov-url]
 
