@@ -21,7 +21,7 @@ function TensorOperations.tensoradd!(C::StridedArray{T}, pC::Index2Tuple,
                                      ::tblisBackend) where {T<:BlasFloat}
     TensorOperations.argcheck_tensoradd(C, pC, A)
     TensorOperations.dimcheck_tensoradd(C, pC, A)
-    
+
     szC = collect(size(C))
     strC = collect(strides(C))
     C_tblis = tblis_tensor(C, szC, strC, β)
