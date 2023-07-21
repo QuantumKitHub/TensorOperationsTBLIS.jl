@@ -13,7 +13,10 @@
 [codecov-img]: https://codecov.io/gh/lkdvos/TensorOperationsTBLIS.jl/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/lkdvos/TensorOperationsTBLIS.jl
 
-Currently provides implementations of `tensorcontract!` and `tensoradd!` for `StridedArray{<:BlasFloat}`. These can be accessed through the backend system of TensorOperations, i.e.
+Currently provides implementations of `tensorcontract!` and `tensoradd!` for
+`StridedArray{<:BlasFloat}`. These can be accessed through the backend system of
+TensorOperations, i.e.
+
 ```julia
 using TensorOperations
 using TensorOperationsTBLIS
@@ -31,8 +34,16 @@ end
 ```
 
 Additionally, the number of threads used by tblis can be set by:
+
 ```julia
 using TensorOperationsTBLIS
 tblis_set_num_threads(4)
 @show tblis_get_num_threads()
 ```
+
+## Notes
+
+- This implementation of tblis for TensorOperations.jl is only supported from v4.0.0 of
+  TensorOperations.jl onwards. For older versions, you could look for
+  [BliContractor.jl](https://github.com/xrq-phys/BliContractor.jl) or
+  [TBLIS.jl](https://github.com/FermiQC/TBLIS.jl).

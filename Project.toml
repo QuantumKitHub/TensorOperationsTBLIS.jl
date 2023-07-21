@@ -13,7 +13,7 @@ tblis_jll = "9c7f617c-f299-5d18-afb6-044c7798b3d0"
 [compat]
 TensorOperations = "4"
 TupleTools = "1"
-julia = "1.6 - 1"
+julia = "1.6"
 tblis_jll = "1.2"
 
 [extras]
