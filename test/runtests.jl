@@ -27,26 +27,26 @@ using LinearAlgebra: norm
         @test collect(E2) ≈ E1
     end
 
-    # @testset "tensortrace" begin
-    #     A = randn(Float32, (5, 10, 10))
-    #     @tensor B1[a] := A[a, b′, b′]
-    #     @tensor B2[a] := CuArray(A)[a, b′, b′]
-    #     @test collect(B2) ≈ B1
+    @testset "tensortrace" begin
+        A = randn(Float32, (5, 10, 10))
+        @tensor B1[a] := A[a, b′, b′]
+        @tensor backend = tblis B2[a] := A[a, b′, b′]
+        @test B2 ≈ B1
 
-    #     C = randn(ComplexF32, (3, 20, 5, 3, 20, 4, 5))
-    #     @tensor D1[e, a, d] := C[a, b, c, d, b, e, c]
-    #     @tensor D2[e, a, d] := CuArray(C)[a, b, c, d, b, e, c]
-    #     @test collect(D2) ≈ D1
+        C = randn(ComplexF32, (3, 20, 5, 3, 20, 4, 5))
+        @tensor D1[e, a, d] := C[a, b, c, d, b, e, c]
+        @tensor backend = tblis D2[e, a, d] := C[a, b, c, d, b, e, c]
+        @test D2 ≈ D1
 
-    #     @tensor D3[a, e, d] := conj(C[a, b, c, d, b, e, c])
-    #     @tensor D4[a, e, d] := conj(CuArray(C)[a, b, c, d, b, e, c])
-    #     @test collect(D4) ≈ D3
+        @tensor D3[a, e, d] := conj(C[a, b, c, d, b, e, c])
+        @tensor backend = tblis D4[a, e, d] := conj(C[a, b, c, d, b, e, c])
+        @test D4 ≈ D3
 
-    #     α = randn(ComplexF32)
-    #     @tensor D5[d, e, a] := α * C[a, b, c, d, b, e, c]
-    #     @tensor D6[d, e, a] := α * CuArray(C)[a, b, c, d, b, e, c]
-    #     @test collect(D6) ≈ D5
-    # end
+        α = randn(ComplexF32)
+        @tensor D5[d, e, a] := α * C[a, b, c, d, b, e, c]
+        @tensor backend = tblis D6[d, e, a] := α * C[a, b, c, d, b, e, c]
+        @test D6 ≈ D5
+    end
 
     @testset "tensorcontract" begin
         A = randn(Float32, (3, 20, 5, 3, 4))

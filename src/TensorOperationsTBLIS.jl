@@ -64,13 +64,27 @@ function TensorOperations.tensorcontract!(C::StridedArray{T}, pC::Index2Tuple,
     return C
 end
 
-# partial traces do not exist in tblis afaik -> use default implementation
-# TODO: implement full trace
 function TensorOperations.tensortrace!(C::StridedArray{T}, pC::Index2Tuple,
                                        A::StridedArray{T}, pA::Index2Tuple, conjA::Symbol,
                                        α::Number, β::Number,
                                        ::tblisBackend) where {T<:BlasFloat}
-    return tensortrace!(C, pC, A, pA, conjA, α, β)
+    TensorOperations.argcheck_tensortrace(C, pC, A, pA)
+    TensorOperations.dimcheck_tensortrace(C, pC, A, pA)
+
+    rmul!(C, β) # TODO: is it possible to use tblis scaling here?
+    szC = ndims(C) == 0 ? Int[] : collect(size(C))
+    strC = ndims(C) == 0 ? Int[] : collect(strides(C))
+    C_tblis = tblis_tensor(C, szC, strC)
+
+    szA = collect(size(A))
+    strA = collect(strides(A))
+    A_tblis = tblis_tensor(conjA == :C ? conj(A) : A, szA, strA, α)
+
+    einA, einC = TensorOperations.trace_labels(pC, pA...)
+
+    tblis_tensor_add(A_tblis, string(einA...), C_tblis, string(einC...))
+
+    return C
 end
 
 end # module TensorOperationsTBLIS
