@@ -1,6 +1,6 @@
 # TensorOperationsTBLIS.jl
 
-[tblis](https://github.com/devinamatthews/tblis) wrapper for [TensorOperations.jl](https://github.com/Jutho/TensorOperations.jl)
+Julia wrapper for [tblis](https://github.com/devinamatthews/tblis) with [TensorOperations.jl](https://github.com/Jutho/TensorOperations.jl).
 
 [![CI][ci-img]][ci-url] [![CI (Julia nightly)][ci-julia-nightly-img]][ci-julia-nightly-url] [![][codecov-img]][codecov-url]
 
@@ -13,7 +13,7 @@
 [codecov-img]: https://codecov.io/gh/lkdvos/TensorOperationsTBLIS.jl/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/lkdvos/TensorOperationsTBLIS.jl
 
-Currently provides implementations of `tensorcontract!` and `tensoradd!` for
+Currently provides implementations of `tensorcontract!`, `tensoradd!` and `tensortrace!` for
 `StridedArray{<:BlasFloat}`. These can be accessed through the backend system of
 TensorOperations, i.e.
 
