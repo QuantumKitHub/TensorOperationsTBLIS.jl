@@ -10,7 +10,7 @@ Julia wrapper for [tblis](https://github.com/devinamatthews/tblis) with [TensorO
 [ci-julia-nightly-img]: https://github.com/lkdvos/TensorOperationsTBLIS.jl/actions/workflows/ci-julia-nightly.yml/badge.svg
 [ci-julia-nightly-url]: https://github.com/lkdvos/TensorOperationsTBLIS.jl/actions/workflows/ci-julia-nightly.yml
 
-[codecov-img]: https://codecov.io/gh/lkdvos/TensorOperationsTBLIS.jl/branch/master/graph/badge.svg
+[codecov-img]: https://codecov.io/gh/lkdvos/TensorOperationsTBLIS.jl/graph/badge.svg?token=R86L0S70VT
 [codecov-url]: https://codecov.io/gh/lkdvos/TensorOperationsTBLIS.jl
 
 Currently provides implementations of `tensorcontract!`, `tensoradd!` and `tensortrace!` for
