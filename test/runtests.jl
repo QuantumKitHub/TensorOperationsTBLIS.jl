@@ -3,11 +3,12 @@ using TensorOperationsTBLIS
 using Test
 using LinearAlgebra: norm
 
+const tblisbackend = tblisBackend()
 @testset "elementary operations" verbose = true begin
     @testset "tensorcopy" begin
         A = randn(Float32, (3, 5, 4, 6))
         @tensor C1[4, 1, 3, 2] := A[1, 2, 3, 4]
-        @tensor backend = tblis C2[4, 1, 3, 2] := A[1, 2, 3, 4]
+        @tensor backend = tblisbackend C2[4, 1, 3, 2] := A[1, 2, 3, 4]
         @test C2 ≈ C1
     end
 
@@ -16,35 +17,36 @@ using LinearAlgebra: norm
         B = randn(Float32, (5, 6, 3, 4))
         α = randn(Float32)
         @tensor C1[a, b, c, d] := A[a, b, c, d] + α * B[a, b, c, d]
-        @tensor backend = tblis C2[a, b, c, d] := A[a, b, c, d] + α * B[a, b, c, d]
+        @tensor backend = tblisbackend C2[a, b, c, d] := A[a, b, c, d] + α * B[a, b, c, d]
         @test collect(C2) ≈ C1
 
         C = randn(ComplexF32, (5, 6, 3, 4))
         D = randn(ComplexF32, (5, 3, 4, 6))
         β = randn(ComplexF32)
         @tensor E1[a, b, c, d] := C[a, b, c, d] + β * conj(D[a, c, d, b])
-        @tensor backend = tblis E2[a, b, c, d] := C[a, b, c, d] + β * conj(D[a, c, d, b])
+        @tensor backend = tblisbackend E2[a, b, c, d] := C[a, b, c, d] +
+                                                         β * conj(D[a, c, d, b])
         @test collect(E2) ≈ E1
     end
 
     @testset "tensortrace" begin
         A = randn(Float32, (5, 10, 10))
         @tensor B1[a] := A[a, b′, b′]
-        @tensor backend = tblis B2[a] := A[a, b′, b′]
+        @tensor backend = tblisbackend B2[a] := A[a, b′, b′]
         @test B2 ≈ B1
 
         C = randn(ComplexF32, (3, 20, 5, 3, 20, 4, 5))
         @tensor D1[e, a, d] := C[a, b, c, d, b, e, c]
-        @tensor backend = tblis D2[e, a, d] := C[a, b, c, d, b, e, c]
+        @tensor backend = tblisbackend D2[e, a, d] := C[a, b, c, d, b, e, c]
         @test D2 ≈ D1
 
         @tensor D3[a, e, d] := conj(C[a, b, c, d, b, e, c])
-        @tensor backend = tblis D4[a, e, d] := conj(C[a, b, c, d, b, e, c])
+        @tensor backend = tblisbackend D4[a, e, d] := conj(C[a, b, c, d, b, e, c])
         @test D4 ≈ D3
 
         α = randn(ComplexF32)
         @tensor D5[d, e, a] := α * C[a, b, c, d, b, e, c]
-        @tensor backend = tblis D6[d, e, a] := α * C[a, b, c, d, b, e, c]
+        @tensor backend = tblisbackend D6[d, e, a] := α * C[a, b, c, d, b, e, c]
         @test D6 ≈ D5
     end
 
@@ -52,13 +54,13 @@ using LinearAlgebra: norm
         A = randn(Float32, (3, 20, 5, 3, 4))
         B = randn(Float32, (5, 6, 20, 3))
         @tensor C1[a, g, e, d, f] := A[a, b, c, d, e] * B[c, f, b, g]
-        @tensor backend = tblis C2[a, g, e, d, f] := A[a, b, c, d, e] * B[c, f, b, g]
+        @tensor backend = tblisbackend C2[a, g, e, d, f] := A[a, b, c, d, e] * B[c, f, b, g]
         @test C2 ≈ C1
 
         D = randn(ComplexF64, (3, 3, 3))
         E = rand(ComplexF64, (3, 3, 3))
         @tensor F1[a, b, c, d, e, f] := D[a, b, c] * conj(E[d, e, f])
-        @tensor backend = tblis F2[a, b, c, d, e, f] := D[a, b, c] * conj(E[d, e, f])
+        @tensor backend = tblisbackend F2[a, b, c, d, e, f] := D[a, b, c] * conj(E[d, e, f])
         @test F2 ≈ F1 atol = 1e-12
     end
 end
@@ -72,12 +74,14 @@ end
     # α = 1
 
     @tensor D1[d, f, h] := A[c, a, f, a, e, b, b, g] * B[c, h, g, e, d] + α * C[d, h, f]
-    @tensor backend = tblis D2[d, f, h] := A[c, a, f, a, e, b, b, g] * B[c, h, g, e, d] +
-                                           α * C[d, h, f]
+    @tensor backend = tblisbackend D2[d, f, h] := A[c, a, f, a, e, b, b, g] *
+                                                  B[c, h, g, e, d] +
+                                                  α * C[d, h, f]
     @test D2 ≈ D1 rtol = 1e-8
 
     @test norm(vec(D1)) ≈ sqrt(abs(@tensor D1[d, f, h] * conj(D1[d, f, h])))
-    @test norm(D2) ≈ sqrt(abs(@tensor backend = tblis D2[d, f, h] * conj(D2[d, f, h])))
+    @test norm(D2) ≈
+          sqrt(abs(@tensor backend = tblisbackend D2[d, f, h] * conj(D2[d, f, h])))
 
     @testset "readme example" begin
         α = randn()
@@ -90,7 +94,7 @@ end
             D[a, b, c] = A[a, e, f, c, f, g] * B[g, b, e] + α * C[c, a, b]
             E[a, b, c] := A[a, e, f, c, f, g] * B[g, b, e] + α * C[c, a, b]
         end
-        @tensor backend = tblis begin
+        @tensor backend = tblisbackend begin
             D2[a, b, c] = A[a, e, f, c, f, g] * B[g, b, e] + α * C[c, a, b]
             E2[a, b, c] := A[a, e, f, c, f, g] * B[g, b, e] + α * C[c, a, b]
         end
@@ -113,7 +117,7 @@ end
             HrA12[a, s1, s2, c] := ρₗ[a, a'] * A1[a', t1, b] * A2[b, t2, c'] * ρᵣ[c', c] *
                                    H[s1, s2, t1, t2]
         end
-        @tensor backend = tblis begin
+        @tensor backend = tblisbackend begin
             HrA12′[a, s1, s2, c] := ρₗ[a, a'] * A1[a', t1, b] * A2[b, t2, c'] * ρᵣ[c', c] *
                                     H[s1, s2, t1, t2]
         end
@@ -123,7 +127,7 @@ end
             E1 = ρₗ[a', a] * A1[a, s, b] * A2[b, s', c] * ρᵣ[c, c'] * H[t, t', s, s'] *
                  conj(A1[a', t, b']) * conj(A2[b', t', c'])
         end
-        @tensor backend = tblis begin
+        @tensor backend = tblisbackend begin
             E2 = ρₗ[a', a] * A1[a, s, b] * A2[b, s', c] * ρᵣ[c, c'] * H[t, t', s, s'] *
                  conj(A1[a', t, b']) * conj(A2[b', t', c'])
         end
