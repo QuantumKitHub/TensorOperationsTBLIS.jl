@@ -21,13 +21,14 @@ TensorOperations, i.e.
 using TensorOperations
 using TensorOperationsTBLIS
 
+tblisbackend = tblisBackend()
 α = randn()
 A = randn(5, 5, 5, 5, 5, 5)
 B = randn(5, 5, 5)
 C = randn(5, 5, 5)
 D = zeros(5, 5, 5)
 
-@tensor backend = tblis begin
+@tensor backend = tblisbackend begin
     D2[a, b, c] = A[a, e, f, c, f, g] * B[g, b, e] + α * C[c, a, b]
     E2[a, b, c] := A[a, e, f, c, f, g] * B[g, b, e] + α * C[c, a, b]
 end
@@ -43,7 +44,8 @@ tblis_set_num_threads(4)
 
 ## Notes
 
-- This implementation of tblis for TensorOperations.jl is only supported from v4.0.0 of
-  TensorOperations.jl onwards. For older versions, you could look for
+- This implementation of tblis for TensorOperations.jl is only supported from v5 of
+  TensorOperations.jl onwards. For v4, an earlier version of this package exists.
+  For older versions, you could look for
   [BliContractor.jl](https://github.com/xrq-phys/BliContractor.jl) or
   [TBLIS.jl](https://github.com/FermiQC/TBLIS.jl).
