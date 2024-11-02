@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------------------
-# Force strided implementation on AbstractArray instances with HPTTBLAS backend
+# Force strided implementation on AbstractArray instances with TBLIS backend
 #-------------------------------------------------------------------------------------------
 const SV = StridedView
 function TensorOperations.tensoradd!(C::AbstractArray,
@@ -69,18 +69,17 @@ function tblis_tensor(A::StridedView,
     end
 end
 
-function stridedtensoradd!(C::StridedView{T},
-                           A::StridedView{T}, pA::Index2Tuple,
-                           α::Number, β::Number,
-                           backend::TBLIS,
-                           allocator=DefaultAllocator()) where {T<:BlasFloat}
+function TensorOperations.stridedtensoradd!(C::StridedView{T},
+                                            A::StridedView{T}, pA::Index2Tuple,
+                                            α::Number, β::Number,
+                                            backend::TBLIS,
+                                            allocator=DefaultAllocator()) where {T<:BlasFloat}
     argcheck_tensoradd(C, A, pA)
     dimcheck_tensoradd(C, A, pA)
     if Base.mightalias(C, A)
         throw(ArgumentError("output tensor must not be aliased with input tensor"))
     end
 
-    # directly use TBLIS types to avoid additional conversion step
     C_tblis = tblis_tensor(C, β)
     A_tblis = tblis_tensor(A, α)
     einA, einC = TensorOperations.add_labels(pA)
@@ -88,19 +87,19 @@ function stridedtensoradd!(C::StridedView{T},
     return C
 end
 
-function stridedtensortrace!(C::StridedView{T},
-                             A::StridedView{T}, p::Index2Tuple, q::Index2Tuple,
-                             α::Number, β::Number,
-                             backend::TBLIS,
-                             allocator=DefaultAllocator()) where {T<:BlasFloat}
+function TensorOperations.stridedtensortrace!(C::StridedView{T},
+                                              A::StridedView{T},
+                                              p::Index2Tuple,
+                                              q::Index2Tuple,
+                                              α::Number, β::Number,
+                                              backend::TBLIS,
+                                              allocator=DefaultAllocator()) where {T<:BlasFloat}
     argcheck_tensortrace(C, A, p, q)
     dimcheck_tensortrace(C, A, p, q)
 
     Base.mightalias(C, A) &&
         throw(ArgumentError("output tensor must not be aliased with input tensor"))
 
-    # directly use TBLIS types to avoid additional conversion step
-    # isone(β) || rmul!(C, β) # TODO: check if TBLIS handles the scaling correctly
     C_tblis = tblis_tensor(C, β)
     A_tblis = tblis_tensor(A, α)
     einA, einC = TensorOperations.trace_labels(p, q)
@@ -108,13 +107,13 @@ function stridedtensortrace!(C::StridedView{T},
     return C
 end
 
-function stridedtensorcontract!(C::StridedView{T},
-                                A::StridedView{T}, pA::Index2Tuple,
-                                B::StridedView{T}, pB::Index2Tuple,
-                                pAB::Index2Tuple,
-                                α::Number, β::Number,
-                                backend::TBLIS,
-                                allocator=DefaultAllocator()) where {T<:BlasFloat}
+function TensorOperations.stridedtensorcontract!(C::StridedView{T},
+                                                 A::StridedView{T}, pA::Index2Tuple,
+                                                 B::StridedView{T}, pB::Index2Tuple,
+                                                 pAB::Index2Tuple,
+                                                 α::Number, β::Number,
+                                                 backend::TBLIS,
+                                                 allocator=DefaultAllocator()) where {T<:BlasFloat}
     argcheck_tensorcontract(C, A, pA, B, pB, pAB)
     dimcheck_tensorcontract(C, A, pA, B, pB, pAB)
 

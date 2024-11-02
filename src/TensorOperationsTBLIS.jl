@@ -6,6 +6,7 @@ using TensorOperations: istrivialpermutation, BlasFloat, linearize
 using TensorOperations: argcheck_tensoradd, dimcheck_tensoradd,
                         argcheck_tensortrace, dimcheck_tensortrace,
                         argcheck_tensorcontract, dimcheck_tensorcontract
+using TensorOperations: stridedtensoradd!, stridedtensortrace!, stridedtensorcontract!
 using TensorOperations: Index2Tuple, IndexTuple, linearize, IndexError
 using LinearAlgebra: BlasFloat
 using TupleTools
