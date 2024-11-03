@@ -1,6 +1,6 @@
 name = "TensorOperationsTBLIS"
 uuid = "1e289f0c-8058-4c3e-8acf-f8ef036bd865"
-authors = ["Lukas Devos <lukas.devos@ugent.be>", "Jutho Haegeman <jutho.haegeman@ugent.be>"]
+authors = ["Lukas Devos <ldevos98@gmail.com>", "Jutho Haegeman <jutho.haegeman@ugent.be>"]
 version = "0.3.0"
 
 [deps]
