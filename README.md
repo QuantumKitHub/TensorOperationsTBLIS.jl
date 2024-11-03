@@ -4,14 +4,14 @@ Julia wrapper for [TBLIS](https://github.com/devinamatthews/tblis) with [TensorO
 
 [![CI][ci-img]][ci-url] [![CI (Julia nightly)][ci-julia-nightly-img]][ci-julia-nightly-url] [![][codecov-img]][codecov-url]
 
-[ci-img]: https://github.com/lkdvos/TensorOperationsTBLIS.jl/actions/workflows/ci.yml/badge.svg
-[ci-url]: https://github.com/lkdvos/TensorOperationsTBLIS.jl/actions/workflows/ci.yml
+[ci-img]: https://github.com/QuantumKitHub/TensorOperationsTBLIS.jl/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/QuantumKitHub/TensorOperationsTBLIS.jl/actions/workflows/ci.yml
 
-[ci-julia-nightly-img]: https://github.com/lkdvos/TensorOperationsTBLIS.jl/actions/workflows/ci-julia-nightly.yml/badge.svg
-[ci-julia-nightly-url]: https://github.com/lkdvos/TensorOperationsTBLIS.jl/actions/workflows/ci-julia-nightly.yml
+[ci-julia-nightly-img]: https://github.com/QuantumKitHub/TensorOperationsTBLIS.jl/actions/workflows/ci-julia-nightly.yml/badge.svg
+[ci-julia-nightly-url]: https://github.com/QuantumKitHub/TensorOperationsTBLIS.jl/actions/workflows/ci-julia-nightly.yml
 
-[codecov-img]: https://codecov.io/gh/lkdvos/TensorOperationsTBLIS.jl/graph/badge.svg?token=R86L0S70VT
-[codecov-url]: https://codecov.io/gh/lkdvos/TensorOperationsTBLIS.jl
+[codecov-img]: https://codecov.io/gh/QuantumKitHub/TensorOperationsTBLIS.jl/graph/badge.svg?token=wTWrpf2Pzh
+[codecov-url]: https://codecov.io/gh/QuantumKitHub/TensorOperationsTBLIS.jl
 
 Currently provides implementations of `tensorcontract!`, `tensoradd!` and `tensortrace!` for array types compatible with Strided.jl, i.e. `StridedView{<:BlasFloat}`.
 These can be accessed through the backend system of TensorOperations, i.e.
