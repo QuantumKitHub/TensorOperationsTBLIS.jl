@@ -16,10 +16,9 @@ using .LibTBLIS
 using .LibTBLIS: LibTBLIS, len_type, stride_type
 
 export TBLIS
-export get_num_tblis_threads, set_num_tblis_threads
 
-get_num_tblis_threads() = convert(Int, LibTBLIS.tblis_get_num_threads())
-set_num_tblis_threads(n) = LibTBLIS.tblis_set_num_threads(convert(Cuint, n))
+get_num_threads() = convert(Int, LibTBLIS.tblis_get_num_threads())
+set_num_threads(n) = LibTBLIS.tblis_set_num_threads(convert(Cuint, n))
 
 # TensorOperations
 #------------------
@@ -34,8 +33,8 @@ or BLAS.
 struct TBLIS <: TensorOperations.AbstractBackend end
 
 Base.@deprecate(tblisBackend(), TBLIS())
-Base.@deprecate(tblis_get_num_threads(), get_num_tblis_threads())
-Base.@deprecate(tblis_set_num_threads(n), set_num_tblis_threads(n))
+Base.@deprecate(tblis_get_num_threads(), get_num_threads())
+Base.@deprecate(tblis_set_num_threads(n), set_num_threads(n))
 
 include("strided.jl")
 
